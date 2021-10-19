@@ -1,0 +1,86 @@
+.\"-
+.\" Copyright (c) 2020-2021 ProcursusTeam
+.\" SPDX-License-Identifier: BSD-4-Clause
+.\"
+.Dd August 19, 2021
+.Dt UICACHE 1
+.Os
+.Sh 名稱
+.Nm uicache
+.Nd 更新已註冊的應用程式
+.Sh 語法
+.Nm
+.Op Fl afhlr
+.Op Fl i Ar 識別碼
+.Op Fl p Ar 路徑
+.Op Fl u Ar 路徑
+.Sh 描述
+更新iOS已註冊的應用程式，然後可選地重新啟動主畫面。
+.Sh 選項
+.Bl -tag -width indent
+.It Fl a , -all
+重構整個快取。
+和舊
+.Nm
+的行為一樣。
+.It Fl f , -force
+當和
+.Fl a
+強制重新註冊所有的應用程式，而不是改變。
+這個選項會導致
+.Fl a
+的速度明顯減慢。
+當和
+.Fl p
+或
+.Fl u ,
+.Nm
+一起使用時，會作用在App Store應用程式上。
+.It Fl h , -help
+印出幫助文本。
+.It Fl r , -respring
+在完成所有操作之後，重新啟動主畫面和backboard。
+.It Fl l , -list
+列出每一個應用程式的路徑和封裝識別碼。
+.It Fl i , -info Ar bundleid
+顯示指定封裝識別碼的應用程式資訊。
+.It Fl u , -unregister Ar path
+從快取中移除位於
+.Ar 路徑
+, 的應用程式。
+.It Fl p , -path Ar 路徑
+把位於指定
+.Ar 路徑
+, 中的應用程式加入到快取中， 或更新快取。
+.El
+.Sh 例子
+要重新整理所有應用程式，
+.Dl "uicache -a"
+.Pp
+要註冊Sileo，
+.Dl "uicache -p /Applications/Sileo.app"
+.Pp
+要顯示關於「設定」應用程式的資訊，
+.Dl "uicache -i com.apple.preferences"
+.Sh 另見
+.Xr sbreload 1 ,
+.Xr uiopen 1
+.Sh 歷史
+這個
+.Nm
+工具程式首先在2008年9月14日在uikittools中出現，由
+.An Jay Qo Saurik Qc Freeman 編寫。
+之後，它被
+.An CoolStar
+為Chimera越獄重新實現。
+.Fl l
+和
+.Fl i
+選項在2021年4月4號由Cameron Katri加到uikittools-ng中。
+.Sh 警告
+這個
+.Nm
+工具程式不會工作在任何由App Store安裝的應用程式，
+這個工具程式有一個檢查來防止改動但可以用
+.Fl f
+來強制執行。

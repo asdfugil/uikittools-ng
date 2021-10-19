@@ -1,0 +1,25 @@
+.\"-
+.\" Copyright (c) 2020-2021 ProcursusTeam
+.\" SPDX-License-Identifier: BSD-4-Clause
+.\"
+.Dd August 19, 2021
+.Dt SBDIDLAUNCH 1
+.Os
+.Sh 名稱
+.Nm sbdidlaunch
+.Nd 等待主畫面啟動
+.Sh 語法
+.Nm
+.Sh 描述
+.Nm
+.等待主畫面啟動，然後以0作為退出代碼結束。
+.Sh 另見
+.Xr sbreload 1
+.Sh 歷史
+這個
+.Nm
+工具程式首先在2010年6月10號出現，由
+.An Jay Qo Saurik Qc Freeman 編寫。
+之後
+.An CoolStar
+在2019年4月30號為Chimera越獄重新實現這一工具程式。

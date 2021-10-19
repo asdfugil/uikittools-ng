@@ -1,0 +1,74 @@
+.\"-
+.\" Copyright (c) 2020-2021 ProcursusTeam
+.\" SPDX-License-Identifier: BSD-4-Clause
+.\"
+.Dd October 15, 2021
+.Dt UIALERT 1
+.Os
+.Sh NAME
+.Nm uialert
+.Nd Display an alert
+.Sh SYNOPSIS
+.Nm
+.Op Fl b Ar body
+.Op Fl p Ar primary
+.Op Fl s Ar second
+.Op Fl t Ar third
+.Op Fl -timeout Ar number
+.Ar title
+.Sh DESCRIPTION
+Display a native alert in the GUI from the command line.
+The title will be set to
+.Ar title .
+It will return the index of the selected button to
+.Ar stdout .
+.Ss OUTPUT
+.Bl -tag -width 4n -offset indent -compact
+.It Sy 0
+The primary button was pressed.
+.It Sy 1
+The secondary button was pressed.
+.It Sy 2
+The tertiary button was pressed.
+.It Sy 3
+The alert timed out or was closed without a response.
+.El
+.Sh OPTIONS
+.Bl -tag -width indent
+.It Fl b , -body Ar body
+Set the alert's body text to
+.Ar body .
+.It Fl p , -primary Ar primary
+Set the default button's text to be
+.Ar primary ,
+instead of the default of
+.Qq OK .
+.It Fl s , -secondary Ar secondary
+Set the second button's text to be
+.Ar secondary ,
+if unset, this button will not show.
+.It Fl t , -tertiary Ar third
+Set the third button's text to be
+.Ar third ,
+if unset, this button will not show.
+.It Fl -timeout Ar number
+After
+.Ar number
+seconds, dismiss the alert.
+.El
+.Sh EXAMPLES
+Create an alert with one button that says
+.Qq OK
+.Dl "uialert -b \*qThis is the body\*q \*qAn Interesting Title\*q"
+.Pp
+Create an alert with two buttons, where the default button says
+.Qq Cancel .
+.Dl "uialert -p \*qCancel\*q -s \*qContinue Anyways\*q -b \*qContinue?\*q \*qThis Action Will Delete Data\*q"
+.Sh HISTORY
+The
+.Nm
+utility first appeared in uikittools on Feburary 26, 2008, written by
+.An Jay Qo Saurik Qc Freeman .
+Later, it was reimplemented by
+.An Cameron Katri
+for uikittools-ng on October 15, 2021 with completely different options and calling.

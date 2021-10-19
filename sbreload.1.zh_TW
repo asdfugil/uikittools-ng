@@ -1,0 +1,26 @@
+.\"-
+.\" Copyright (c) 2020-2021 ProcursusTeam
+.\" SPDX-License-Identifier: BSD-4-Clause
+.\"
+.Dd August 19, 2021
+.Dt SBRELOAD 1
+.Os
+.Sh 名稱
+.Nm sbreload
+.Nd 快速重啟主畫面
+.Sh 語法
+.Nm
+.Sh 用途
+.Nm
+當被執行時會重新啟動主畫面，而且快過用其他方法，例如：
+.Xr uicache 1 Fl r .
+.Sh 另見
+.Xr uicache 1
+.Sh 歷史
+這個
+.Nm
+工具程式首先在2010年12月3號出現在uikittools中，由
+.An Jay Qo Saurik Qc Freeman所編寫。
+之後
+.An CoolStar
+在2019年4月30號為了Chimera越獄重新實現這一工具程式。

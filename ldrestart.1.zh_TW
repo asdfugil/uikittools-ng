@@ -1,0 +1,25 @@
+.\"-
+.\" Copyright (c) 2020-2021 ProcursusTeam
+.\" SPDX-License-Identifier: BSD-4-Clause
+.\"
+.Dd August 19, 2021
+.Dt LDRESTART 1
+.Os
+.Sh 名稱
+.Nm ldrestart
+.Nd 重新啟動現正執行的服務
+.Sh 語法
+.Nm
+.Sh 描述
+.Nm
+當被使用時，會導致所有launchd服務被重新啟動。
+.Sh 另見
+.Xr sbreload 1
+.Sh 歷史
+這個
+.Nm
+工具程式在2016年6月22日出現，由
+.An Jay Qo Saurik Qc Freeman 編寫。
+之後
+.An CoolStar
+在2019年4月30號為Chimera越獄重新實現這工具程式。
