@@ -5,20 +5,21 @@
 .Dd October 18, 2021
 .Dt UISAVE 1
 .Os
-.Sh NAME
+.Sh 名稱
 .Nm uisave
-.Nd Save images and videos to the camera roll
-.Sh SYNOPSIS
+.Nd 把影像和影片儲存到相機膠卷中
+.Sh 語法
 .Nm
-.Ar
-.Sh DESCRIPTION
-Saves one or more images and videos to the camera roll.
-Metadata does not get stripped.
-Image and video formats that can be saved vary between iOS versions.
-.Sh SEE ALSO
+.Ar 檔案......
+.Sh 描述
+把單個或更多個的影像和影片儲存到相機膠卷中。
+不會移除元數據。
+能夠儲存的影像和影片格式受iOS版本而異。
+.Sh 另見
 .Xr uishoot 1
-.Sh HISTORY
-The
+.Sh 歷史
+這個
 .Nm
-utility first appeared in uikittools-ng on October 18, 2021, written by
-.An absidue .
+工具程式首先在2021年10月18日中出現，由
+.An absidue
+編寫。

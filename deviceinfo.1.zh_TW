@@ -1,4 +1,4 @@
-.\"-
+,.\"-
 .\" Copyright (c) 2020-2021 ProcursusTeam
 .\" SPDX-License-Identifier: BSD-4-Clause
 .\"
@@ -11,7 +11,7 @@
 .Sh 語法
 .Nm
 ,.Oo Ar cfversion | ecid | locale | serial | uniqueid Oc
-.Op arguments ...
+.Op 選項 ...
 .Sh 描述
 .Nm
 印出指定的裝置資訊，然後退出。
@@ -23,7 +23,7 @@
 印出裝置的唯一晶片識別碼 (ECID)。
 .It Ar locale Op Fl ilcvh
 以要求的格式印出系統區域設置。
-The following options are available
+以下的選項是可用的：
 .Bl -tag -width indent
 .It Fl i , -identifier
 印出區域設置識別嗎，這是預設選項。

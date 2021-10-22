@@ -5,44 +5,45 @@
 .Dd October 18, 2021
 .Dt UISHOOT 1
 .Os
-.Sh NAME
+.Sh 名稱
 .Nm uishoot
-.Nd Take a screenshot
-.Sh SYNOPSIS
+.Nd 截取螢幕截圖
+.Sh 語法
 .Nm
 .Op Fl cp
 .Op Fl d Ar number
 .Op Fl f Op Ar jpeg | png | heic
 .Op Fl o Ar file
-.Sh DESCRIPTION
-The
+.Sh 描述
+這個
 .Nm
-utility will take a screenshot.
-.Sh OPTIONS
+工具程式會截取一張螢幕截圖。
+.Sh 選項
 .Bl -tag -width indent
 .It Fl c , -clipboard
-Save the screenshot to the clipboard.
+把螢幕截圖儲存到剪貼板中。
 .It Fl d , -delay Ar number
-Wait
+在截取螢幕截圖前，等待
 .Ar number
-seconds before taking the screenshot.
+秒的時間。
 .It Fl p , -photos
-Add the screenshot to the photos album.
+把螢幕截圖加到相機膠卷中。
 .It Fl f , -format Op Ar jpeg | png | heic
-Save and output the image in the specified format.
+輸出並以指定的格式儲存螢幕截圖。
 .It Fl o , -output Ar file
-Save the photo to
-.Ar file .
-If
+把螢幕截圖儲存到
+.Ar file 。
+如果
 .Fl f
-is unset, the format will be derived from the file extension of
-.Ar file .
+沒有設定那麼格式將會以
+.Ar file
+的副檔名來推斷出來。
 .El
-.Sh HISTORY
-The
+.Sh 歷史
+這個
 .Nm
-utility first appeared in uikittools on August 29, 2008, written by
-.An Jay Qo Saurik Qc Freeman .
-Later, it was reimplemented by
+工具程式首先在2008年8月29日出現，由
+.An Jay Qo Saurik Qc Freeman 編寫。
+之後，
 .An sunchipnacho
-for uikittools-ng on October 18, 2021 with added options.
+在2021年10月18日為uikitoools-ng重新實現了這一工具程式，並加入更多的選項。

@@ -5,10 +5,10 @@
 .Dd October 15, 2021
 .Dt UIALERT 1
 .Os
-.Sh NAME
+.Sh 名稱
 .Nm uialert
-.Nd Display an alert
-.Sh SYNOPSIS
+.Nd 顯示一個對話框。
+.Sh 語法
 .Nm
 .Op Fl b Ar body
 .Op Fl p Ar primary
@@ -16,59 +16,66 @@
 .Op Fl t Ar third
 .Op Fl -timeout Ar number
 .Ar title
-.Sh DESCRIPTION
-Display a native alert in the GUI from the command line.
-The title will be set to
-.Ar title .
-It will return the index of the selected button to
-.Ar stdout .
-.Ss OUTPUT
+.Sh 描述
+從命令列介面中來令在圖形介面中顯示一個原生對話框。
+標題會被設定為
+.Ar title
+。
+被選擇的按鈕的索引會被輸出到
+.Ar 標準輸出
+。
+.Ss 輸出
 .Bl -tag -width 4n -offset indent -compact
 .It Sy 0
-The primary button was pressed.
+第一個按鈕被按下。
 .It Sy 1
-The secondary button was pressed.
+第二個按鈕被按下
 .It Sy 2
-The tertiary button was pressed.
+第三個按鈕被按下。
 .It Sy 3
-The alert timed out or was closed without a response.
+對話框超時或在沒有回應的情況下被關閉。
 .El
 .Sh OPTIONS
 .Bl -tag -width indent
 .It Fl b , -body Ar body
-Set the alert's body text to
+把對話框的正文設定為
 .Ar body .
 .It Fl p , -primary Ar primary
-Set the default button's text to be
+把預設按鈕的文字設定為
 .Ar primary ,
-instead of the default of
-.Qq OK .
+而不是預設文字
+.Qq 好
+。
 .It Fl s , -secondary Ar secondary
-Set the second button's text to be
-.Ar secondary ,
-if unset, this button will not show.
+把第二個按鈕的文字設定為
+.Ar secondary
+，
+如沒有設定，這按鈕將不會顯示。
 .It Fl t , -tertiary Ar third
-Set the third button's text to be
+把第三個按鈕的文字設定為
 .Ar third ,
-if unset, this button will not show.
+如沒有設定，這按鈕將不會顯示。
 .It Fl -timeout Ar number
-After
+在經過
 .Ar number
-seconds, dismiss the alert.
+秒後，關閉這個對話框。
 .El
-.Sh EXAMPLES
-Create an alert with one button that says
-.Qq OK
-.Dl "uialert -b \*qThis is the body\*q \*qAn Interesting Title\*q"
+.Sh 例子
+顯示一個第一個按鈕的文字為
+.Qq 好
+的對話框。
+.Dl "uialert -b \*q這是正文\*q \*q有趣的標題\*q"
 .Pp
-Create an alert with two buttons, where the default button says
-.Qq Cancel .
-.Dl "uialert -p \*qCancel\*q -s \*qContinue Anyways\*q -b \*qContinue?\*q \*qThis Action Will Delete Data\*q"
-.Sh HISTORY
-The
+顯示一個有兩個按鈕的對話框，而第一個按鈕的文字為
+.Qq 取消
+。
+.Dl "uialert -p \*q取消\*q -s \*q仍要繼續\*q -b \*q繼續？\*q \*q這個操作將會刪除數據。\*q"
+.Sh 歷史
+這個
 .Nm
-utility first appeared in uikittools on Feburary 26, 2008, written by
-.An Jay Qo Saurik Qc Freeman .
-Later, it was reimplemented by
+工具程式首先在2008年2月26日出現在uikittools中，由
+.An Jay Qo Saurik Qc Freeman
+編寫。
+之後
 .An Cameron Katri
-for uikittools-ng on October 15, 2021 with completely different options and calling.
+在2021年10月15日為uikittools-ng重新實現了這個工具程式，且用法完全不同。
