@@ -10,7 +10,6 @@ ALL := gssc ldrestart sbdidlaunch sbreload uicache uiopen deviceinfo uialert uis
 MAN := gssc.1 ldrestart.1 sbdidlaunch.1 sbreload.1 uicache.1 uiopen.1 deviceinfo.1 uialert.1 uishoot.1 uinotify.1 uisave.1
 ALLMAC := gssc deviceinfo uialert
 MANMAC := gssc.1 deviceinfo.1 uialert.1
-MAN_LANG := zh_TW
 APP_PATH ?= $(MEMO_PREFIX)/Applications
 
 sign: $(ALL)
@@ -67,26 +66,16 @@ install: sign $(ALL)
 	ln -sf deviceinfo $(DESTDIR)$(PREFIX)/bin/ecidecid
 	$(INSTALL) -d $(DESTDIR)$(PREFIX)/share/man/man1/
 	$(INSTALL) -m644 $(patsubst %,man/%,$(MAN)) $(DESTDIR)$(PREFIX)/share/man/man1/
-	for man_lang in $(MAN_LANG); do \
-		$(INSTALL) -d $(DESTDIR)$(PREFIX)/share/man/$$man_lang/man1; \
-		for man in $(MAN); do \
-			[ -f $$man.$$man_lang ] && \
-				$(INSTALL) -m644 man/$(MAN).$$man_lang $(DESTDIR)$(PREFIX)/share/man/$$man_lang/man1/$$man; \
-		done; \
-	done
+	$(INSTALL) -d $(DESTDIR)$(PREFIX)/share/man/zh_TW/man1; \
+	$(INSTALL) -m644 $(patsubst %,man/%.zh_TW,$(MAN)) $(DESTDIR)$(PREFIX)/share/man/zh_TW/man1/
 
 install-macosx: $(ALLMAC)
 	$(INSTALL) -d $(DESTDIR)$(PREFIX)/bin/
 	$(INSTALL) -s -m755 $(ALLMAC) $(DESTDIR)$(PREFIX)/bin/
 	$(INSTALL) -d $(DESTDIR)$(PREFIX)/share/man/man1/
-	cd man && $(INSTALL) -m644 $(patsubst %,man/%,$(MANMAC)) $(DESTDIR)$(PREFIX)/share/man/man1/
-	for man_lang in $(MAN_LANG); do \
-		$(INSTALL) -d $(DESTDIR)$(PREFIX)/share/man/$$man_lang/man1; \
-		for man in $(MAN_LANG); do \
-			[ -f $$man.$$man_lang ] && \
-				$(INSTALL) -m644 man/$$man.$$man_lang $(DESTDIR)$(PREFIX)/share/man/$$man_lang/man1/$$man || true;\
-		done; \
-	done
+	$(INSTALL) -m644 $(patsubst %,man/%,$(MANMAC)) $(DESTDIR)$(PREFIX)/share/man/man1/
+	$(INSTALL) -d $(DESTDIR)$(PREFIX)/share/man/zh_TW/man1; \
+	$(INSTALL) -m644 $(patsubst %,man/%.zh_TW,$(MANMAC)) $(DESTDIR)$(PREFIX)/share/man/zh_TW/man1/
 
 clean:
 	rm -rf $(ALL) $(ALLMAC) *.dSYM
