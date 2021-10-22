@@ -12,10 +12,10 @@
 .Nm
 .Op Fl b Ar body
 .Op Fl p Ar primary
-.Op Fl -priority Ar number
+.Op Fl -priority Ar 數字
 .Op Fl s Ar second
 .Op Fl t Ar third
-.Op Fl -timeout Ar number
+.Op Fl -timeout Ar 數字
 .Ar title
 .Sh 描述
 從命令列介面中來令在圖形介面中顯示一個原生對話框。
@@ -47,10 +47,10 @@
 而不是預設文字
 .Qq 好
 。
-It Fl -priority Ar number
+It Fl -priority Ar 數字
 把對話框的優先度設定為
-.Ar number .
-.Ar number
+.Ar 數字 .
+.Ar 數字
 一定要在0和3之間，且包含0和3。
 If not specified the priority will be 1.
 這只會影響在
@@ -65,9 +65,9 @@ If not specified the priority will be 1.
 把第三個按鈕的文字設定為
 .Ar third ,
 如沒有設定，這按鈕將不會顯示。
-.It Fl -timeout Ar number
+.It Fl -timeout Ar 數字
 在經過
-.Ar number
+.Ar 數字
 秒後，關閉這個對話框。
 .El
 .Sh 例子

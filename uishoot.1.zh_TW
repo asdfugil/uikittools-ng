@@ -11,7 +11,7 @@
 .Sh 語法
 .Nm
 .Op Fl cp
-.Op Fl d Ar number
+.Op Fl d Ar 數字
 .Op Fl f Op Ar jpeg | png | heic
 .Op Fl o Ar file
 .Sh 描述
@@ -22,9 +22,9 @@
 .Bl -tag -width indent
 .It Fl c , -clipboard
 把螢幕截圖儲存到剪貼板中。
-.It Fl d , -delay Ar number
+.It Fl d , -delay Ar 數字
 在截取螢幕截圖前，等待
-.Ar number
+.Ar 數字
 秒的時間。
 .It Fl p , -photos
 把螢幕截圖加到相機膠卷中。

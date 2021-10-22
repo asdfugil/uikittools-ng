@@ -11,7 +11,7 @@
 .Sh 語法
 .Nm
 .Op Fl b Ar body
-.Op Fl d Ar number
+.Op Fl d Ar 數字
 .Op Fl i Ar bundleid
 .Op Fl s Ar subtitle
 .Ar title
@@ -27,9 +27,9 @@
 把通知的正文設定為
 .Ar body
 。
-.It Fl d , -delay Ar number
+.It Fl d , -delay Ar 數字
 在
-.Ar number
+.Ar 數字
 秒後發信通知。
 .It Fl i , -identifier Ar bundleid
 以封裝識別碼為
