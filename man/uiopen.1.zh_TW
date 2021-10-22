@@ -1,0 +1,65 @@
+.\"-
+.\" Copyright (c) 2020-2021 ProcursusTeam
+.\" SPDX-License-Identifier: BSD-4-Clause
+.\"
+.Dd August 19, 2021
+.Dt UIOPEN 1
+.Os
+.Sh 名稱
+.Nm uiopen
+.Nd 開啟應用程式或網址
+.Sh 語法
+.Nm
+.Op Fl h
+.Op Fl a Ar 名稱
+.Op Fl b Ar 識別碼
+.Op Fl p Ar 路徑
+.Op Fl u Ar 網址
+.Sh 描述
+.Nm
+會開啟指定的應用程式或網頁，並在主畫面上顯示。
+.Sh OPTIONS
+.Bl -tag -width indent
+.It Fl a , -app Ar 名稱
+尋找這個名稱的應用程式， 並把它打開。
+.It Fl b , -bundleid Ar 識別碼
+開啟指定封裝識別碼的應用程式。
+.It Fl h , -help
+印出幫助文本。
+.It Fl p , -path Ar 路徑
+開啟位於指定.app封裝的應用程式。
+.It Fl u , -網址 Ar 網址
+在瀏覽器中使用http或根據網址中的協定來開啟網址。
+.El
+.Sh 例子
+要在預設瀏覽器中開啟github.com
+.Dl "uiopen -u https://github.com"
+.Pp
+要開啟「設定」應用程式
+.Dl "uiopen -a Settings"
+.Pp
+要通過使用路徑來開啟Sileo, /Applications/Sileo.app
+.Dl "uiopen -p /Application/Sileo.app"
+.Sh 另見
+.Xr uicache 1
+.Sh 歷史
+這個
+.Nm
+工具程式首先在2008年8月18號在uikittools中出現，由
+.An Jay Qo Saurik Qc Freeman .
+之後
+.An CoolStar
+在2019年4月30號由CoolStar為Chimera越獄重新實現。
+選項
+.Fl u ，
+.Fl h ，
+和
+.Fl b
+在2020年12月25日由absidue加到uiopen中。
+選項
+.Fl a ,
+和
+.Fl p
+在2020年12月25日由absidue加入。
+.Nm Ar 網址
+在2021年8月19日被標記為過時。
