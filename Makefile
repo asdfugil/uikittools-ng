@@ -76,3 +76,8 @@ install-macosx: $(ALLMAC) $(MANMAC)
 
 clean:
 	rm -rf $(ALL) $(ALLMAC) *.dSYM
+
+format:
+	find . -type f -name '*.[cm]' -exec clang-format -i {} \;
+
+.PHONY: all clean install install-macosx sign format

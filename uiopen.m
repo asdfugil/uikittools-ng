@@ -1,16 +1,16 @@
-#import <stdio.h>
-#import <getopt.h>
-#import <dlfcn.h>
 #import <Foundation/Foundation.h>
+#import <dlfcn.h>
+#import <getopt.h>
+#import <stdio.h>
 
 @interface LSBundleProxy : NSObject
-@property (nonatomic, assign, readonly) NSURL *bundleURL;
-@property (nonatomic, assign, readonly) NSString *canonicalExecutablePath;
+@property(nonatomic, assign, readonly) NSURL *bundleURL;
+@property(nonatomic, assign, readonly) NSString *canonicalExecutablePath;
 @end
 
 @interface LSApplicationProxy : LSBundleProxy
-@property (nonatomic, assign, readonly) NSString *applicationIdentifier;
--(id)localizedNameForContext:(id)context;
+@property(nonatomic, assign, readonly) NSString *applicationIdentifier;
+- (id)localizedNameForContext:(id)context;
 @end
 
 @interface LSApplicationWorkspace : NSObject
@@ -20,7 +20,8 @@
 - (BOOL)openApplicationWithBundleID:(NSString *)bundleId;
 @end
 
-void help(char *name) {
+// clang-format off
+void help() {
 	printf(
 		"Usage: %s [OPTION...]\n"
 		"Open URLs and open iOS applications by bundle ID\n\n"
@@ -31,8 +32,9 @@ void help(char *name) {
 		"  --app <app>     Open application with the\n"
 		"                     specified name.\n"
 		"  --path <path>   Open application at the specified path\n"
-		"  --help          Give this help list.\n", name);
+		"  --help          Give this help list.\n", getprogname());
 }
+// clang-format on
 
 int main(int argc, char *argv[]) {
 	char *url = NULL;
@@ -41,18 +43,20 @@ int main(int argc, char *argv[]) {
 	char *path = NULL;
 	int showhelp = 0;
 
+// clang-format off
 	struct option longOptions[] = {
-		{ "url" , required_argument, 0, 'u'},
-		{ "bundleid", required_argument, 0, 'b'},
-		{ "app", required_argument, 0, 'a'},
-		{ "path", required_argument, 0, 'p'},
-		{ "help", no_argument, 0, 'h' },
-		{ NULL, 0, NULL, 0 }
-	};
+		{"url", required_argument, 0, 'u'},
+		{"bundleid", required_argument, 0, 'b'},
+		{"app", required_argument, 0, 'a'},
+		{"path", required_argument, 0, 'p'},
+		{"help", no_argument, 0, 'h'},
+		{NULL, 0, NULL, 0}};
+// clang-format on
 
 	int index = 0, code = 0;
 
-	int opterr = 0; // silence getopt errors, allow us to replicate old behaviour
+	int opterr =
+		0;	// silence getopt errors, allow us to replicate old behaviour
 
 	while ((code = getopt_long(argc, argv, "u:b:a:p:h", longOptions, &index)) != -1) {
 		switch (code) {
@@ -75,7 +79,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	if (argc == 1) {
-		help(argv[0]);
+		help();
 		return 1;
 	}
 
@@ -85,28 +89,41 @@ int main(int argc, char *argv[]) {
 	}
 
 	if (showhelp == 1) {
-		help(argv[0]);
-	}
-	else if (url) {
-		NSURL *urlObj = [NSURL URLWithString:[NSString stringWithUTF8String:url]];
+		help();
+	} else if (url) {
+		NSURL *urlObj =
+			[NSURL URLWithString:[NSString stringWithUTF8String:url]];
 
-		void *fbs = dlopen("/System/Library/PrivateFrameworks/FrontBoardServices.framework/FrontBoardServices", RTLD_NOW);
-		NSString *__strong *FBSOpenApplicationOptionKeyUnlockDevice = (NSString *__strong *)dlsym(fbs, "FBSOpenApplicationOptionKeyUnlockDevice");
-		[[LSApplicationWorkspace defaultWorkspace] openSensitiveURL:urlObj withOptions:@{*FBSOpenApplicationOptionKeyUnlockDevice:@YES}];
-	}
-	else if (bundleId) {
-		[[LSApplicationWorkspace defaultWorkspace] openApplicationWithBundleID:[NSString stringWithUTF8String:bundleId]];
-	}
-	else if (app) {
-		LSApplicationWorkspace *workspace = [LSApplicationWorkspace defaultWorkspace];
-		NSArray<LSApplicationProxy *> *apps = [workspace allInstalledApplications];
+		void *fbs = dlopen(
+			"/System/Library/PrivateFrameworks/FrontBoardServices.framework/"
+			"FrontBoardServices",
+			RTLD_NOW);
+		NSString *__strong *FBSOpenApplicationOptionKeyUnlockDevice =
+			(NSString * __strong *)dlsym(
+				fbs, "FBSOpenApplicationOptionKeyUnlockDevice");
+		[[LSApplicationWorkspace defaultWorkspace]
+			openSensitiveURL:urlObj
+				 withOptions:@{
+					 *FBSOpenApplicationOptionKeyUnlockDevice : @YES
+				 }];
+	} else if (bundleId) {
+		[[LSApplicationWorkspace defaultWorkspace]
+			openApplicationWithBundleID:[NSString
+											stringWithUTF8String:bundleId]];
+	} else if (app) {
+		LSApplicationWorkspace *workspace =
+			[LSApplicationWorkspace defaultWorkspace];
+		NSArray<LSApplicationProxy *> *apps =
+			[workspace allInstalledApplications];
 
 		NSString *nameStr = [NSString stringWithUTF8String:app];
 
 		BOOL found = NO;
 		for (LSApplicationProxy *appProxy in apps) {
-			if ([nameStr isEqualToString:[appProxy localizedNameForContext:nil]]) {
-				[workspace openApplicationWithBundleID:appProxy.applicationIdentifier];
+			if ([nameStr
+					isEqualToString:[appProxy localizedNameForContext:nil]]) {
+				[workspace
+					openApplicationWithBundleID:appProxy.applicationIdentifier];
 				found = YES;
 				break;
 			}
@@ -115,10 +132,11 @@ int main(int argc, char *argv[]) {
 			fprintf(stderr, "No application called: %s\n", app);
 			return 1;
 		}
-	}
-	else if (path) {
-		LSApplicationWorkspace *workspace = [LSApplicationWorkspace defaultWorkspace];
-		NSArray<LSApplicationProxy *> *apps = [workspace allInstalledApplications];
+	} else if (path) {
+		LSApplicationWorkspace *workspace =
+			[LSApplicationWorkspace defaultWorkspace];
+		NSArray<LSApplicationProxy *> *apps =
+			[workspace allInstalledApplications];
 
 		NSString *pathString = [NSString stringWithUTF8String:path];
 		NSString *urlString = [@"file://" stringByAppendingString:pathString];
@@ -131,8 +149,10 @@ int main(int argc, char *argv[]) {
 		if (bundleURL) {
 			BOOL found = NO;
 			for (LSApplicationProxy *app in apps) {
-				if ([bundleURL isEqual:app.bundleURL] || [pathString isEqualToString:app.canonicalExecutablePath]) {
-					[workspace openApplicationWithBundleID:app.applicationIdentifier];
+				if ([bundleURL isEqual:app.bundleURL] ||
+					[pathString isEqualToString:app.canonicalExecutablePath]) {
+					[workspace
+						openApplicationWithBundleID:app.applicationIdentifier];
 					found = YES;
 					break;
 				}

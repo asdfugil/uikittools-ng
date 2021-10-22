@@ -1,10 +1,11 @@
-#import <Photos/Photos.h>
 #import <Foundation/Foundation.h>
+#import <Photos/Photos.h>
 #import <UIKit/UIKit.h>
 
-void usage(char *name) {
+// clang-format off
+void usage() {
 	printf(
-		"Usage: %s FILE...\n"
+		"Usage: %s file ...\n"
 		"Copyright (C) 2021, Procursus Team. All Rights Reserved.\n\n"
 
 		"Save images and videos to the camera roll\n\n"
@@ -12,13 +13,13 @@ void usage(char *name) {
 		"Image and video formats that can be saved to the camera roll\n"
 		"vary between iOS versions\n\n"
 
-		"Contact the Procursus Team for support.\n", name);
+		"Contact the Procursus Team for support.\n", getprogname());
 }
+// clang-format on
 
 int main(int argc, char *argv[]) {
-
 	if (argc < 2) {
-		usage(argv[0]);
+		usage();
 		return 1;
 	}
 
@@ -27,10 +28,13 @@ int main(int argc, char *argv[]) {
 
 	for (int i = 1; i < argc; i++) {
 		char *path = argv[i];
-		NSString *pathString = [[NSString stringWithUTF8String:path] stringByExpandingTildeInPath];
+		NSString *pathString =
+			[[NSString stringWithUTF8String:path] stringByExpandingTildeInPath];
 
 		BOOL directory;
-		BOOL exists = [NSFileManager.defaultManager fileExistsAtPath:pathString isDirectory:&directory];
+		BOOL exists =
+			[NSFileManager.defaultManager fileExistsAtPath:pathString
+											   isDirectory:&directory];
 
 		if (directory || !exists) {
 			fprintf(stderr, "No file at path: %s\n", path);
@@ -45,38 +49,47 @@ int main(int argc, char *argv[]) {
 		if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(pathString)) {
 			[videos addObject:pathString];
 		} else if ([UIImage imageWithContentsOfFile:pathString]) {
-			// imageWithContentsOfFile returns nil if it can't create an image from the file
+			// imageWithContentsOfFile returns nil if it can't create an image
+			// from the file
 			[images addObject:pathString];
 		} else {
-			fprintf(stderr, "No supported image or video format at: %s\n", path);
+			fprintf(stderr, "No supported image or video format at: %s\n",
+					path);
 			return 1;
 		}
 	}
 
-
 	NSError *error;
 	for (NSString *image in images) {
 		NSURL *url = [NSURL fileURLWithPath:image isDirectory:NO];
-		BOOL success = [[PHPhotoLibrary sharedPhotoLibrary] performChangesAndWait:^{
-			[PHAssetChangeRequest creationRequestForAssetFromImageAtFileURL:url];
-		} error:&error];
+		BOOL success = [[PHPhotoLibrary sharedPhotoLibrary]
+			performChangesAndWait:^{
+			  [PHAssetChangeRequest
+				  creationRequestForAssetFromImageAtFileURL:url];
+			}
+							error:&error];
 
 		if (!success) {
 			const char *errorString = error.localizedDescription.UTF8String;
-			fprintf(stderr, "Failed to save image at %s with error: %s\n", image.UTF8String, errorString);
+			fprintf(stderr, "Failed to save image at %s with error: %s\n",
+					image.UTF8String, errorString);
 			return 1;
 		}
 	}
 
 	for (NSString *video in videos) {
 		NSURL *url = [NSURL fileURLWithPath:video isDirectory:NO];
-		BOOL success = [[PHPhotoLibrary sharedPhotoLibrary] performChangesAndWait:^{
-			[PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:url];
-		} error:&error];
+		BOOL success = [[PHPhotoLibrary sharedPhotoLibrary]
+			performChangesAndWait:^{
+			  [PHAssetChangeRequest
+				  creationRequestForAssetFromVideoAtFileURL:url];
+			}
+							error:&error];
 
 		if (!success) {
 			const char *errorString = error.localizedDescription.UTF8String;
-			fprintf(stderr, "Failed to save video at %s with error: %s\n", video.UTF8String, errorString);
+			fprintf(stderr, "Failed to save video at %s with error: %s\n",
+					video.UTF8String, errorString);
 			return 1;
 		}
 	}

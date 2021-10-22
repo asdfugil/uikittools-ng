@@ -12,6 +12,7 @@
 .Nm
 .Op Fl b Ar body
 .Op Fl p Ar primary
+.Op Fl -priority Ar number
 .Op Fl s Ar second
 .Op Fl t Ar third
 .Op Fl -timeout Ar number
@@ -43,6 +44,14 @@ Set the default button's text to be
 .Ar primary ,
 instead of the default of
 .Qq OK .
+.It Fl -priority Ar number
+Set the priority of the alert to be
+.Ar number .
+.Ar number
+must be between 0 and 3, inclusive.
+If not specified the priority will be 1.
+This will only affect the appearence of the alert on
+.Os macOS.
 .It Fl s , -secondary Ar secondary
 Set the second button's text to be
 .Ar secondary ,

@@ -1,5 +1,5 @@
-#include <CoreFoundation/CoreFoundation.h>
 #include <CoreFoundation/CFString.h>
+#include <CoreFoundation/CoreFoundation.h>
 
 CFStringRef MGCopyAnswer(CFStringRef string);
 

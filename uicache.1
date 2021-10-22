@@ -2,7 +2,7 @@
 .\" Copyright (c) 2020-2021 ProcursusTeam
 .\" SPDX-License-Identifier: BSD-4-Clause
 .\"
-.Dd August 19, 2021
+.Dd October 18, 2021
 .Dt UICACHE 1
 .Os
 .Sh NAME
@@ -19,10 +19,10 @@ Update iOS registered applications and optionally restart SpringBoard.
 .Sh OPTIONS
 .Bl -tag -width indent
 .It Fl a , -all
-Rebuild the entire cache.
-This replicates the old
+Iterate through the system applications and update the cache to reflect any changes.
+This replicates behavior of the old
 .Nm
-behavior
+ran without options.
 .It Fl f , -force
 Forces all applications to be reregistered when used with
 .Fl a

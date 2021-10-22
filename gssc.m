@@ -2,7 +2,7 @@
 
 NSObject *MGCopyAnswer(NSString *query);
 
-int main(){
+int main() {
 	@autoreleasepool {
 		NSArray *gestaltKeys = @[
 			@"3GProximityCapability",
@@ -583,9 +583,11 @@ int main(){
 			@"youtubePlugin",
 		];
 		NSMutableDictionary *answers = [NSMutableDictionary dictionary];
-		for (NSString *query in gestaltKeys){
+		for (NSString *query in gestaltKeys) {
 			NSObject *answer = MGCopyAnswer(query);
-			if ([answer isKindOfClass:[NSString class]] || [answer isKindOfClass:[NSNumber class]] || [answer isKindOfClass:[NSArray class]]){
+			if ([answer isKindOfClass:[NSString class]] ||
+				[answer isKindOfClass:[NSNumber class]] ||
+				[answer isKindOfClass:[NSArray class]]) {
 				[answers setObject:answer forKey:query];
 			}
 		}

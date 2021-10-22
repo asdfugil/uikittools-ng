@@ -1,17 +1,19 @@
+#import <Foundation/Foundation.h>
+#import <Photos/Photos.h>
+#import <UIKit/UIKit.h>
 #include <err.h>
 #include <getopt.h>
 #include <stdbool.h>
 #include <stdio.h>
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
-#import <Photos/Photos.h>
 
-OBJC_EXTERN UIImage *_UICreateScreenUIImage(void);
+OBJC_EXTERN UIImage* _UICreateScreenUIImage(void);
 
+// clang-format off
 void usage(uint8_t ret) {
-	fprintf(stderr, "uishoot [-cp] [-d number] [-f [png | jpeg | heic]] [-o file]\n");
+	fprintf(stderr, "Usage: %s [-cp] [-d number] [-f [png | jpeg | heic]] [-o file]\n", getprogname());
 	exit(ret);
 }
+// clang-format on
 
 int main(int argc, char** argv) {
 	bool copyToClipboard = false;
@@ -20,17 +22,18 @@ int main(int argc, char** argv) {
 	NSString* filePath = nil;
 	NSString* imageFormat = @"png";
 	int c;
-	const char *errstr;
+	const char* errstr;
 	__block int ret = 0;
 
+// clang-format off
 	static struct option longopts[] = {
-		{ "clipboard",	no_argument,	NULL,		'b' },
-		{ "photos",	no_argument,	NULL,		'p' },
-		{ "delay",	required_argument,	NULL,		'd' },
-		{ "format",	required_argument,	NULL,		'f' },
-		{ "output",	required_argument,	NULL,		'o' },
-		{ NULL,		0,			NULL, 		0 }
-	};
+		{"clipboard", no_argument, NULL, 'b'},
+		{"photos", no_argument, NULL, 'p'},
+		{"delay", required_argument, NULL, 'd'},
+		{"format", required_argument, NULL, 'f'},
+		{"output", required_argument, NULL, 'o'},
+		{NULL, 0, NULL, 0}};
+// clang-format on
 
 	while ((c = getopt_long(argc, argv, "cpd:f:o:", longopts, NULL)) != -1) {
 		switch (c) {
@@ -50,8 +53,11 @@ int main(int argc, char** argv) {
 				break;
 			case 'f':
 				imageFormat = [NSString stringWithUTF8String:optarg];
-				if (imageFormat && ![imageFormat isEqualToString:@"png"] && ![imageFormat isEqualToString:@"jpeg"] && ![imageFormat isEqualToString:@"heic"]) {
-					fprintf(stderr, "Invalid image format '%s'\n", imageFormat.UTF8String);
+				if (imageFormat && ![imageFormat isEqualToString:@"png"] &&
+					![imageFormat isEqualToString:@"jpeg"] &&
+					![imageFormat isEqualToString:@"heic"]) {
+					fprintf(stderr, "Invalid image format '%s'\n",
+							imageFormat.UTF8String);
 					usage(2);
 				}
 				break;
@@ -63,8 +69,7 @@ int main(int argc, char** argv) {
 		}
 	}
 
-	if (optind <= 1)
-		usage(1);
+	if (optind <= 1) usage(1);
 
 	if (delay) sleep(delay);
 
@@ -74,7 +79,7 @@ int main(int argc, char** argv) {
 		return 2;
 	}
 
-	if (copyToClipboard) { 
+	if (copyToClipboard) {
 		FILE* old_stderr = stderr;
 		stderr = fopen("/dev/null", "w");
 
@@ -86,10 +91,12 @@ int main(int argc, char** argv) {
 
 	if (filePath) {
 		NSError* error;
-		NSString* imageUTI = [NSString stringWithFormat:@"public.%@", imageFormat];
+		NSString* imageUTI =
+			[NSString stringWithFormat:@"public.%@", imageFormat];
 
 		NSMutableData* imageData = [[NSMutableData alloc] init];
-		CGImageDestinationRef destinationRef = CGImageDestinationCreateWithData((CFMutableDataRef)imageData, (CFStringRef)imageUTI, 1, NULL);
+		CGImageDestinationRef destinationRef = CGImageDestinationCreateWithData(
+			(CFMutableDataRef)imageData, (CFStringRef)imageUTI, 1, NULL);
 		CGImageDestinationAddImage(destinationRef, screenShot.CGImage, NULL);
 		if (!CGImageDestinationFinalize(destinationRef)) {
 			fprintf(stderr, "Could not get image data to write to file!\n");
@@ -98,8 +105,11 @@ int main(int argc, char** argv) {
 
 		CFRelease(destinationRef);
 
-		if (ret != 3 && ![imageData writeToFile:filePath options:NSDataWritingAtomic error:&error]) {
-			fprintf(stderr, "Could not write image to %s: %s\n", filePath.UTF8String, error.localizedDescription.UTF8String);
+		if (ret != 3 && ![imageData writeToFile:filePath
+										options:NSDataWritingAtomic
+										  error:&error]) {
+			fprintf(stderr, "Could not write image to %s: %s\n",
+					filePath.UTF8String, error.localizedDescription.UTF8String);
 			ret = 3;
 		}
 	}
@@ -107,16 +117,20 @@ int main(int argc, char** argv) {
 	if (saveToPhotos) {
 		dispatch_semaphore_t sema = dispatch_semaphore_create(0);
 
-		[[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-			[PHAssetChangeRequest creationRequestForAssetFromImage:screenShot];
-		} completionHandler:^(BOOL success, NSError* error) {
-			if (!success) {
-				fprintf(stderr, "Could not save screenshot to Photos: %s\n", error.localizedDescription.UTF8String);
-				ret = 3;
+		[[PHPhotoLibrary sharedPhotoLibrary]
+			performChanges:^{
+			  [PHAssetChangeRequest
+				  creationRequestForAssetFromImage:screenShot];
 			}
+			completionHandler:^(BOOL success, NSError* error) {
+			  if (!success) {
+				  fprintf(stderr, "Could not save screenshot to Photos: %s\n",
+						  error.localizedDescription.UTF8String);
+				  ret = 3;
+			  }
 
-			dispatch_semaphore_signal(sema);
-		}];
+			  dispatch_semaphore_signal(sema);
+			}];
 
 		dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
 	}
