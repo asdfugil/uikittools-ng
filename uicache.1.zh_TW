@@ -19,8 +19,8 @@
 .Sh 選項
 .Bl -tag -width indent
 .It Fl a , -all
-重構整個快取。
-和舊
+迭代每一個系統應用程式， 並更新快取以反映情況。
+這和舊
 .Nm
 的行為一樣。
 .It Fl f , -force
