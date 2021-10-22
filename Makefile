@@ -10,7 +10,7 @@ ALL := gssc ldrestart sbdidlaunch sbreload uicache uiopen deviceinfo uialert uis
 MAN := gssc.1 ldrestart.1 sbdidlaunch.1 sbreload.1 uicache.1 uiopen.1 deviceinfo.1 uialert.1 uishoot.1 uinotify.1 uisave.1
 ALLMAC := gssc deviceinfo uialert
 MANMAC := gssc.1 deviceinfo.1 uialert.1
-
+MAN_LANG := zh_TW
 APP_PATH ?= $(MEMO_PREFIX)/Applications
 
 sign: $(ALL)
@@ -28,7 +28,7 @@ all: sign
 
 gssc: gssc.m gssc.plist
 	$(CC) -fobjc-arc -O3 $(CFLAGS) gssc.m -o gssc $(LDFLAGS) -framework Foundation -lMobileGestalt
-	
+
 ldrestart: ldrestart.c ent.plist
 	$(CC) -O3 $(CFLAGS) ldrestart.c -o ldrestart $(LDFLAGS)
 
@@ -66,7 +66,14 @@ install: sign $(ALL) $(MAN)
 	ln -sf deviceinfo $(DESTDIR)$(PREFIX)/bin/uiduid
 	ln -sf deviceinfo $(DESTDIR)$(PREFIX)/bin/ecidecid
 	$(INSTALL) -d $(DESTDIR)$(PREFIX)/share/man/man1/
-	$(INSTALL) -m644 $(MAN) $(DESTDIR)$(PREFIX)/share/man/man1/
+	$(INSTALL) -m644 man/$(MAN) $(DESTDIR)$(PREFIX)/share/man/man1/
+	for $$man_lang in $(MAN_LANG); do \
+		$(INSTALL) -d $(DESTDIR)$(PREFIX)/share/man/$$man_lang/man1; \
+		for $$man in $(MAN); do \
+			[ -f $(MAN).$$man_lang ] && \
+				$(INSTALL) -m644 man/$(MAN).$$man_lang $(DESTDIR)$(PREFIX)/share/man/$$man_lang/man1/$(MAN);
+		done; \
+	done
 
 install-macosx: $(ALLMAC) $(MANMAC)
 	$(INSTALL) -d $(DESTDIR)$(PREFIX)/bin/
