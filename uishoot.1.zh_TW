@@ -13,7 +13,7 @@
 .Op Fl cp
 .Op Fl d Ar 數字
 .Op Fl f Op Ar jpeg | png | heic
-.Op Fl o Ar file
+.Op Fl o Ar 檔案
 .Sh 描述
 這個
 .Nm
@@ -30,13 +30,13 @@
 把螢幕截圖加到相機膠卷中。
 .It Fl f , -format Op Ar jpeg | png | heic
 輸出並以指定的格式儲存螢幕截圖。
-.It Fl o , -output Ar file
+.It Fl o , -output Ar 檔案
 把螢幕截圖儲存到
-.Ar file 。
+.Ar 檔案 。
 如果
 .Fl f
 沒有設定那麼格式將會以
-.Ar file
+.Ar 檔案
 的副檔名來推斷出來。
 .El
 .Sh 歷史
