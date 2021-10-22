@@ -65,17 +65,21 @@ install: sign $(ALL)
 	ln -sf deviceinfo $(DESTDIR)$(PREFIX)/bin/uiduid
 	ln -sf deviceinfo $(DESTDIR)$(PREFIX)/bin/ecidecid
 	$(INSTALL) -d $(DESTDIR)$(PREFIX)/share/man/man1/
+	$(INSTALL) -d $(DESTDIR)$(PREFIX)/share/man/zh_TW/man1;
+	$(INSTALL) -d $(DESTDIR)$(PREFIX)/share/man/zh_CN/man1;
 	$(INSTALL) -m644 $(patsubst %,man/%,$(MAN)) $(DESTDIR)$(PREFIX)/share/man/man1/
-	$(INSTALL) -d $(DESTDIR)$(PREFIX)/share/man/zh_TW/man1; \
-	$(INSTALL) -m644 $(patsubst %,man/%.zh_TW,$(MAN)) $(DESTDIR)$(PREFIX)/share/man/zh_TW/man1/
+	$(INSTALL) -m644 $(patsubst %,man/zh_TW/%,$(MAN)) $(DESTDIR)$(PREFIX)/share/man/zh_TW/man1/
+	$(INSTALL) -m644 $(patsubst %,man/zh_CN/%,$(MAN)) $(DESTDIR)$(PREFIX)/share/man/zh_CN/man1/
 
 install-macosx: $(ALLMAC)
 	$(INSTALL) -d $(DESTDIR)$(PREFIX)/bin/
 	$(INSTALL) -s -m755 $(ALLMAC) $(DESTDIR)$(PREFIX)/bin/
 	$(INSTALL) -d $(DESTDIR)$(PREFIX)/share/man/man1/
+	$(INSTALL) -d $(DESTDIR)$(PREFIX)/share/man/zh_TW/man1;
+	$(INSTALL) -d $(DESTDIR)$(PREFIX)/share/man/zh_CN/man1;
 	$(INSTALL) -m644 $(patsubst %,man/%,$(MANMAC)) $(DESTDIR)$(PREFIX)/share/man/man1/
-	$(INSTALL) -d $(DESTDIR)$(PREFIX)/share/man/zh_TW/man1; \
-	$(INSTALL) -m644 $(patsubst %,man/%.zh_TW,$(MANMAC)) $(DESTDIR)$(PREFIX)/share/man/zh_TW/man1/
+	$(INSTALL) -m644 $(patsubst %,man/zh_TW/%,$(MANMAC)) $(DESTDIR)$(PREFIX)/share/man/zh_TW/man1/
+	$(INSTALL) -m644 $(patsubst %,man/zh_CN/%,$(MANMAC)) $(DESTDIR)$(PREFIX)/share/man/zh_CN/man1/
 
 clean:
 	rm -rf $(ALL) $(ALLMAC) *.dSYM

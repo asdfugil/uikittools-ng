@@ -1,0 +1,53 @@
+.\"-
+.\"Copyright (c) 2020-2021 ProcursusTeam
+.\"SPDX-License-Identifier: BSD-4-Clause
+.\"
+.Dd August 23, 2021
+.Dt DEVICEINFO 1
+.Os
+.Sh 名称
+.Nm deviceinfo
+.Nd 印出各种装置资讯
+.Sh 语法
+.Nm
+.Oo Ar cfversion | ecid | locale | serial | uniqueid Oc
+.Op 选项 ...
+.Sh 描述
+.Nm
+印出指定的装置资讯，然后退出。
+.Sh 子命令
+.Bl -tag -width indent
+.It Ar cfversion
+印出装置CoreFoundation版本.
+.It Ar ecid
+印出装置的唯一晶片识别码 (ECID)。
+.It Ar locale Op Fl ilcvh
+以要求的格式印出系统区域设置。
+以下的选项是可用的：
+.Bl -tag -width indent
+.It Fl i , -identifier
+印出区域设置识别吗，这是预设选项。
+.It Fl l , -language
+印出语言编号。
+.It Fl c , -country
+印出区域设置的国家的编号。
+.It Fl v , -variant
+印出区域设置变种。
+.It Fl h , -help
+印出帮助。
+.El
+.It Ar serial
+印出装置的串列码。
+.It Ar uniqueid
+印出装置唯一编号 (UDID)。
+.El
+.Sh 历史
+这个
+.Nm
+工具程式在2021年8月23日被
+.An sunchipnacho
+编写，取代uikittools-ng中的
+.Nm cfversion ，
+.Nm ecidecid ，
+和
+.Nm uiduid 。

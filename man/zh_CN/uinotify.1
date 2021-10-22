@@ -1,0 +1,51 @@
+.\"-
+.\"Copyright (c) 2020-2021 ProcursusTeam
+.\"SPDX-License-Identifier: BSD-4-Clause
+.\"
+.Dd October 15, 2021
+.Dt UINOTIFY 1
+.Os
+.Sh 名称
+.Nm uinotify
+.Nd 发送本地iOS通知
+.Sh 语法
+.Nm
+.Op Fl b Ar 正文
+.Op Fl d Ar 数字
+.Op Fl i Ar 封装识别码
+.Op Fl s Ar 副标题
+.Ar title
+.Sh 描述
+发出一个标题为
+.Ar title
+的iOS通知。
+预设会以「设定」 应用程式的身份发信通知。
+用来作为通知的来源应用程式必须要有发送通知的权限。
+.Sh 选项
+.Bl -tag -width indent
+.It Fl b , -body Ar body
+把通知的正文设定为
+.Ar body
+。
+.It Fl d , -delay Ar 数字
+在
+.Ar 数字
+秒后发信通知。
+.It Fl i , -identifier Ar 封装识别码
+以封装识别码为
+.Ar 封装识别码
+的应用程式的名义来发生通知。
+通知预设会以com.apple.Preferences封装识别码来发送。
+.It Fl s , -subtitle Ar 副标题
+把副标题的文字设定为
+.Ar 副标题
+，如没有设定，副标题就不会显示。
+.El
+.Sh 另见
+.Xr uialert 1
+.Sh 历史
+这个
+.Nm
+工具程式首先在2021年10月17号出现在uikittools-ng中，由
+.An Cameron Katri
+编写。

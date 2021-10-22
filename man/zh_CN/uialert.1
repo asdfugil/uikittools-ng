@@ -1,0 +1,91 @@
+.\"-
+.\"Copyright (c) 2020-2021 ProcursusTeam
+.\"SPDX-License-Identifier: BSD-4-Clause
+.\"
+.Dd October 15, 2021
+.Dt UIALERT 1
+.Os
+.Sh 名称
+.Nm uialert
+.Nd 显示一个对话框。
+.Sh 语法
+.Nm
+.Op Fl b Ar body
+.Op Fl p Ar primary
+.Op Fl -priority Ar 数字
+.Op Fl s Ar second
+.Op Fl t Ar third
+.Op Fl -timeout Ar 数字
+.Ar title
+.Sh 描述
+从命令列介面中来令在图形介面中显示一个原生对话框。
+标题会被设定为
+.Ar title
+。
+被选择的按钮的索引会被输出到
+.Ar 标准输出
+。
+.Ss 输出
+.Bl -tag -width 4n -offset indent -compact
+.It Sy 0
+第一个按钮被按下。
+.It Sy 1
+第二个按钮被按下
+.It Sy 2
+第三个按钮被按下。
+.It Sy 3
+对话框超时或在没有回应的情况下被关闭。
+.El
+.Sh OPTIONS
+.Bl -tag -width indent
+.It Fl b , -body Ar body
+把对话框的正文设定为
+.Ar body .
+.It Fl p , -primary Ar primary
+把预设按钮的文字设定为
+.Ar primary ,
+而不是预设文字
+.Qq 好
+。
+It Fl -priority Ar 数字
+把对话框的优先度设定为
+.Ar 数字 .
+.Ar 数字
+一定要在0和3之间，且包含0和3。
+If not specified the priority will be 1.
+这只会影响在
+.Os macOS
+上对话框的样貌。
+.It Fl s , -secondary Ar secondary
+把第二个按钮的文字设定为
+.Ar secondary
+，
+如没有设定，这按钮将不会显示。
+.It Fl t , -tertiary Ar third
+把第三个按钮的文字设定为
+.Ar third ,
+如没有设定，这按钮将不会显示。
+.It Fl -timeout Ar 数字
+在经过
+.Ar 数字
+秒后，关闭这个对话框。
+.El
+.Sh 例子
+显示一个第一个按钮的文字为
+.Qq 好
+的对话框。
+.Dl "uialert -b \*q这是正文\*q \*q有趣的标题\*q"
+.Pp
+显示一个有两个按钮的对话框，而第一个按钮的文字为
+.Qq 取消
+。
+.Dl "uialert -p \*q取消\*q -s \*q仍要继续\*q -b \*q继续？\*q \*q这个操作将会删除数据。\*q"
+.Sh 历史
+这个
+.Nm
+工具程式首先在2008年2月26日出现在uikittools中，由
+.An Jay Qo Saurik Qc Freeman
+编写。
+之后
+.An Cameron Katri
+在2021年10月15日为uikittools-ng重新实现了这个工具程式，且用法完全不同。
