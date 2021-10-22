@@ -84,7 +84,7 @@ install-macosx: $(ALLMAC)
 		$(INSTALL) -d $(DESTDIR)$(PREFIX)/share/man/$$man_lang/man1; \
 		for man in $(MAN_LANG); do \
 			[ -f $$man.$$man_lang ] && \
-				$(INSTALL) -m644 man/$$man.$$man_lang $(DESTDIR)$(PREFIX)/share/man/$$man_lang/man1/$$man; \
+				$(INSTALL) -m644 man/$$man.$$man_lang $(DESTDIR)$(PREFIX)/share/man/$$man_lang/man1/$$man || true;\
 		done; \
 	done
 
