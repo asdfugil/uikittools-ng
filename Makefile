@@ -59,7 +59,7 @@ uisave: uisave.m uisave.plist
 deviceinfo: deviceinfo.c ecidecid.m uiduid.m serial.m locale.m cfversion.c
 	$(CC) -fobjc-arc -O3 $(CFLAGS) $^ -o $@ $(LDFLAGS) -framework CoreFoundation -lMobileGestalt
 
-install: sign $(ALL) $(MAN)
+install: sign $(ALL)
 	$(INSTALL) -d $(DESTDIR)$(PREFIX)/bin/
 	$(INSTALL) -s -m755 $(ALL) $(DESTDIR)$(PREFIX)/bin/
 	ln -sf deviceinfo $(DESTDIR)$(PREFIX)/bin/cfversion
@@ -75,7 +75,7 @@ install: sign $(ALL) $(MAN)
 		done; \
 	done
 
-install-macosx: $(ALLMAC) $(MANMAC)
+install-macosx: $(ALLMAC)
 	$(INSTALL) -d $(DESTDIR)$(PREFIX)/bin/
 	$(INSTALL) -s -m755 $(ALLMAC) $(DESTDIR)$(PREFIX)/bin/
 	$(INSTALL) -d $(DESTDIR)$(PREFIX)/share/man/man1/
