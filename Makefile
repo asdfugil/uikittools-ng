@@ -67,9 +67,9 @@ install: sign $(ALL)
 	ln -sf deviceinfo $(DESTDIR)$(PREFIX)/bin/ecidecid
 	$(INSTALL) -d $(DESTDIR)$(PREFIX)/share/man/man1/
 	$(INSTALL) -m644 $(patsubst %,man/%,$(MAN)) $(DESTDIR)$(PREFIX)/share/man/man1/
-	for $$man_lang in $(MAN_LANG); do \
+	for man_lang in $(MAN_LANG); do \
 		$(INSTALL) -d $(DESTDIR)$(PREFIX)/share/man/$$man_lang/man1; \
-		for $$man in $(MAN); do \
+		for man in $(MAN); do \
 			[ -f $$man.$$man_lang ] && \
 				$(INSTALL) -m644 man/$(MAN).$$man_lang $(DESTDIR)$(PREFIX)/share/man/$$man_lang/man1/$$man;
 		done; \
@@ -80,9 +80,9 @@ install-macosx: $(ALLMAC)
 	$(INSTALL) -s -m755 $(ALLMAC) $(DESTDIR)$(PREFIX)/bin/
 	$(INSTALL) -d $(DESTDIR)$(PREFIX)/share/man/man1/
 	cd man && $(INSTALL) -m644 $(patsubst %,man/%,$(MANMAC)) $(DESTDIR)$(PREFIX)/share/man/man1/
-	for $$man_lang in $(MAN_LANG); do \
+	for man_lang in $(MAN_LANG); do \
 		$(INSTALL) -d $(DESTDIR)$(PREFIX)/share/man/$$man_lang/man1; \
-		for $$man in $(MAN_LANG); do \
+		for man in $(MAN_LANG); do \
 			[ -f $$man.$$man_lang ] && \
 				$(INSTALL) -m644 man/$$man.$$man_lang $(DESTDIR)$(PREFIX)/share/man/$$man_lang/man1/$$man;
 		done; \
