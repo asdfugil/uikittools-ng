@@ -58,9 +58,9 @@ jobs:
     - name: setup environment
       run: |
         echo ${{ matrix.cc }}
-        echo "PLATFORM=$(printf ${{ matrix.cc }} | gcut -d ' ' -f3)" >> $GITHUB_ENV
-        echo "ARCH=$(printf ${{ matrix.cc }} | gcut -d ' ' -f6)" >> $GITHUB_ENV
-        echo "PLATFORM_VERSION=$(printf ${{ matrix.cc }} | gcut -d '=' -f2 | gcut -d. -f1)" >> $$GITHUB_ENV
+        echo "PLATFORM=$(gcut -d ' ' -f3 <<< '${{ matrix.cc }}')" >> $GITHUB_ENV
+        echo "ARCH=$(gcut -d ' ' -f6 <<< '${{ matrix.cc }}')" >> $GITHUB_ENV
+        echo "PLATFORM_VERSION=$(gcut -d '=' -f2 <<< '${{ matrix.cc }}' | gcut -d. -f1)" >> $$GITHUB_ENV
 
     - name: build
       run: |
