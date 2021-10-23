@@ -57,15 +57,14 @@ jobs:
         
     - name: setup environment
       run: |
-        echo ${{ matrix.cc }}
         echo "PLATFORM=$(gcut -d ' ' -f3 <<< '${{ matrix.cc }}')" >> $GITHUB_ENV
         echo "ARCH=$(gcut -d ' ' -f6 <<< '${{ matrix.cc }}')" >> $GITHUB_ENV
         echo "PLATFORM_VERSION=$(gcut -d '=' -f2 <<< '${{ matrix.cc }}' | gcut -d. -f1)" >> $GITHUB_ENV
+        echo "UIKITTOOLS_VERSION=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
 
     - name: build
       run: |
-        echo ${PLATFORM}-${ARCH}-${PLATFORM_VERSION}
-        case ${PLATFORM}-${ARCH}-${PLATFORM_VERSION} in
+        case ${PLATFORM}-${ARCH}-${PLATFORM_VERSION}
           macosx-x86_64-11)
             export PREFIX=/opt/procursus
             export DEB_ARCH=darwin-amd64
@@ -87,12 +86,11 @@ jobs:
             export DEB_ARCH=darwin-arm64
             ;;
           esac
-        echo "${DEB_ARCH} ${PREFIX}"
+        echo "DEB_ARCH=${DEB_ARCH}" >> $GITHUB_ENV
         export CFLAGS=-I.
         sudo gsed -i 's/API_UNAVAILABLE(ios, watchos, tvos)/API_AVAILABLE(ios(2.0), watchos(1.0), tvos(9.0))/g' $(xcrun -sdk ${PLATFORM} --show-sdk-path)/System/Library/Frameworks/CoreFoundation.framework/Headers/*.h 
         gmake -j$(sysctl -n hw.ncpu)
         gmake -j$(sysctl -n hw.ncpu) install DESTDIR=debroot
-        export UIKITTOOLS_VERSION=$(echo "$(git describe --tags --abbrev=0)")
         mkdir debroot/DEBIAN
         gsed -e "s/@DEB_ARCH@/${DEB_ARCH}/g" -e "s/@DEB_UIKITTOOLS_V@/$(printf ${UIKITTOOLS_VERSION} | gcut -d v -f2)/g" control > debroot/DEBIAN/control
         dpkg-deb -b debroot uikittools_${UIKITTOOLS_VERSION}_${DEB_ARCH}.deb
