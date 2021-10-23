@@ -86,6 +86,7 @@ jobs:
             ;;
           esac
         export CFLAGS=-I.
+        sudo gsed -i 's|API_UNAVAILABLE|API_AVAILABLE|g' $(xcrun -sdk ${PLATFORM} --show-sdk-path)/System/Library/Frameworks/CoreFoundation.framework/Headers/*.h 
         gmake -j$(sysctl -n hw.ncpu)
         gmake -j$(sysctl -n hw.ncpu) install DESTDIR=debroot
         export UIKITTOOLS_VERSION=$(echo "$(git describe --tags --abbrev=0)")
