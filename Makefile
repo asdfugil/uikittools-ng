@@ -64,7 +64,7 @@ deviceinfo: deviceinfo.c ecidecid.m uiduid.m serial.m locale.m cfversion.c
 
 install: sign $(ALL)
 	$(INSTALL) -d $(DESTDIR)$(PREFIX)/bin/
-	$(INSTALL) -s -m755 $(ALL) $(DESTDIR)$(PREFIX)/bin/
+	$(INSTALL) -m755 $(ALL) $(DESTDIR)$(PREFIX)/bin/
 	ln -sf deviceinfo $(DESTDIR)$(PREFIX)/bin/cfversion
 	ln -sf deviceinfo $(DESTDIR)$(PREFIX)/bin/uiduid
 	ln -sf deviceinfo $(DESTDIR)$(PREFIX)/bin/ecidecid
