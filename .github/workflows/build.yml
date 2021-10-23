@@ -60,7 +60,7 @@ jobs:
         echo ${{ matrix.cc }}
         echo "PLATFORM=$(gcut -d ' ' -f3 <<< '${{ matrix.cc }}')" >> $GITHUB_ENV
         echo "ARCH=$(gcut -d ' ' -f6 <<< '${{ matrix.cc }}')" >> $GITHUB_ENV
-        echo "PLATFORM_VERSION=$(gcut -d '=' -f2 <<< '${{ matrix.cc }}' | gcut -d. -f1)" >> $$GITHUB_ENV
+        echo "PLATFORM_VERSION=$(gcut -d '=' -f2 <<< '${{ matrix.cc }}' | gcut -d. -f1)" >> $GITHUB_ENV
 
     - name: build
       run: |
