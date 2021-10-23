@@ -57,9 +57,10 @@ jobs:
         
     - name: setup environment
       run: |
-        echo "PLATFORM=$(printf ${{ matrix.cc }} | cut -d ' ' -f3)" >> $GITHUB_ENV
-        echo "ARCH=$(printf ${{ matrix.cc }} | cut -d ' ' -f6)" >> $GITHUB_ENV
-        echo "PLATFORM_VERSION=$(printf ${{ matrix.cc }} | cut -d '=' -f2 | cut -d. -f1)" >> $$GITHUB_ENV
+        echo ${{ matrix.cc }}
+        echo "PLATFORM=$(printf ${{ matrix.cc }} | gcut -d ' ' -f3)" >> $GITHUB_ENV
+        echo "ARCH=$(printf ${{ matrix.cc }} | gcut -d ' ' -f6)" >> $GITHUB_ENV
+        echo "PLATFORM_VERSION=$(printf ${{ matrix.cc }} | gcut -d '=' -f2 | gcut -d. -f1)" >> $$GITHUB_ENV
 
     - name: build
       run: |
@@ -93,7 +94,7 @@ jobs:
         gmake -j$(sysctl -n hw.ncpu) install DESTDIR=debroot
         export UIKITTOOLS_VERSION=$(echo "$(git describe --tags --abbrev=0)")
         mkdir debroot/DEBIAN
-        gsed -e "s/@DEB_ARCH@/${DEB_ARCH}/g" -e "s/@DEB_UIKITTOOLS_V@/$(printf ${UIKITTOOLS_VERSION} | cut -d v -f2)/g" control > debroot/DEBIAN/control
+        gsed -e "s/@DEB_ARCH@/${DEB_ARCH}/g" -e "s/@DEB_UIKITTOOLS_V@/$(printf ${UIKITTOOLS_VERSION} | gcut -d v -f2)/g" control > debroot/DEBIAN/control
         dpkg-deb -b debroot uikittools_${UIKITTOOLS_VERSION}_${DEB_ARCH}.deb
 
     - uses: actions/upload-artifact@v1
