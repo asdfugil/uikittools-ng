@@ -21,9 +21,11 @@ APP_PATH ?= $(MEMO_PREFIX)/Applications
 sign: $(ALL)
 	$(STRIP) $(ALL)
 	for tool in $(ALL); do \
-		[ -f $$tool.plist ] && \
-			$(LDID) -S$$tool.plist $$tool || \
+		if [ -f $$tool.plist ]; then \
+			$(LDID) -S$$tool.plist $$tool; \
+		else \
 			$(LDID) -Sent.plist $$tool; \
+		fi; \
 	done
 all: sign
 
