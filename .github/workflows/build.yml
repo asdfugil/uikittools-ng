@@ -1,0 +1,115 @@
+name: build
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  release:
+    types:
+      - created
+
+jobs:
+  build-linux:
+    runs-on: macos-11.0
+    strategy:
+      matrix:
+        cc:
+        - xcrun -sdk iphoneos clang -arch arm64 -miphoneos-version-min=11.0
+        - xcrun -sdk iphoneos clang -arch arm64 -miphoneos-version-min=15.0
+        - xcrun -sdk macosx clang -arch x86_64 -mmacosx-version-min=11.0
+        - xcrun -sdk macosx clang -arch arm64 -mmacosx-version-min=11.0
+        - xcurn -sdk appletvos clang -arch arm64 -mappletvos-version-min=11.0
+      env:
+        CC: ${{ matrix.cc }}
+
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        submodules: recursive
+
+    - uses: actions/cache@v2
+      id: procache
+      with:
+        path: |
+          ~/__cache
+        key: ${{ runner.os }}-procursus
+
+    - name: Setup Procursus Bootstrap (install)
+      if: steps.procache.outputs.cache-hit != 'true'
+      run: |
+        wget https://apt.procurs.us/bootstrap_darwin-amd64.tar.zst
+        sudo gtar --preserve-permissions -xkf ./bootstrap_darwin-amd64.tar.zst -C /
+        echo '/opt/procursus/sbin:/opt/procursus/bin' >> $GITHUB_PATH
+        PATH=/opt/procursus/sbin:/opt/procursus/bin:$PATH sudo /opt/procursus/bin/apt update
+        sudo /opt/procursus/bin/apt-get -V dist-upgrade -y || :
+        sudo /opt/procursus/bin/apt-get -V dist-upgrade -y
+        sudo /opt/procursus/bin/apt-get install make sed ldid -y
+
+    - name: Add Procursus to PATH
+      run: |
+        echo '/opt/procursus/sbin:/opt/procursus/bin' >> $GITHUB_PATH
+    - name: Setup Procursus Bootstrap (cache)
+      if: steps.procache.outputs.cache-hit == 'true'
+      run: |
+        sudo mkdir -p ~/__cache/procursus/var/cache/apt/archives/partial ~/__cache/procursus/var/lib/apt/lists/partial
+        sudo rsync -aP ~/__cache/procursus /opt
+        sudo /opt/procursus/bin/apt-get update
+        sudo /opt/procursus/bin/apt-get -V dist-upgrade -y
+        
+    - name: setup environment
+      run: |
+        echo "PLATFORM=$(echo ${{ matrix.cc }} | cut -d ' ' -f3 | cut -d ' ' -f1)" >> $GITHUB_ENV
+        echo "ARCH=$(echo ${{ matrix.cc }} | cut -d ' ' -f6 | cut -d ' ' -f1)" >> $GITHUB_ENV
+        echo "PLATFORM_VERSION=$(echo ${{ matrix.cc }} | cut -d '=' -f2 | cut -d. -f1)" >> $$GITHUB_ENV
+
+    - name: build
+      run: |
+        case ${PLATFROM}-${ARCH}-${PLATFORM_VERSION} in
+          macosx-x86_64-11)
+            export PREFIX=/opt/procursus
+            export DEB_ARCH=darwin-amd64
+            ;;
+          iphoneos-arm64-11)
+            export PREFIX=/usr
+            export DEB_ARCH=iphoneos-arm
+            ;;
+          appletvos-arm64-11)
+            export PREFIX=/usr
+            export DEB_ARCH=appletvos-arm64
+            ;;
+          iphoneos-arm64-15)
+            export PREFIX=/private/preboot/procursus/usr
+            export DEB_ARCH=iphoneos-arm64
+            ;;
+          macosx-arm64-11)
+            export PREFIX=/opt/procursus
+            export DEB_ARCH=darwin-arm64
+            ;;
+          esac
+        gmake -j$(sysctl -n hw.ncpu)
+        gmake -j$(sysctl -n hw.ncpu) install DESTDIR=debroot
+        export UIKITTOOLS_VERSION=$(echo "$(git describe --tags --abbrev=0)")
+        mkdir debroot/DEBIAN
+        gsed -e "s/@DEB_ARCH@/${DEB_ARCH}" -e "s/@DEB_UIKITTOOLS_V@/${UIKITTOOLS_VERSION}" > debroot/DEBIAN/control
+        dpkg-deb -b debroot uikittools_${UIKITTOOLS_VERSION}_${DEB_ARCH}.deb
+
+    - uses: actions/upload-artifact@v1
+      with:
+        name: uikittools_${UIKITTOOLS_VERSION}_${DEB_ARCH}.deb
+        path: uikittools_${UIKITTOOLS_VERSION}_${DEB_ARCH}.deb
+ 
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      if: ${{ github.event_name == 'release' }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: uikittools_${UIKITTOOLS_VERSION}_${DEB_ARCH}.deb
+        asset_name: uikittools_${UIKITTOOLS_VERSION}_${DEB_ARCH}.deb
+        asset_content_type: application/octet-stream
+
+    - name: Copy Procursus to Cache Location
+      run: |
+        sudo mkdir -p ~/__cache
+        sudo rsync -aP /opt/procursus ~/__cache
+        sudo rm -rf ~/__cache/procursus/var/cache/apt/archives/partial ~/__cache/procursus/var/lib/apt/lists/partial ~/__cache/procursus/Library/dpkg/triggers/Lock

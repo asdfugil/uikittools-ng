@@ -1,0 +1,8 @@
+Package: uikittools
+Essential: yes
+Version: @DEB_UIKITTOOLS_V@
+Architecture: @DEB_ARCH@
+Maintainer: Hayden Seay <me@diratr.us>
+Section: Utilities
+Priority: required
+Description: Command line access for UIKit/LaunchServices/CoreServices
