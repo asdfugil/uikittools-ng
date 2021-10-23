@@ -99,8 +99,8 @@ jobs:
 
     - uses: actions/upload-artifact@v1
       with:
-        name: uikittools_${UIKITTOOLS_VERSION}_${DEB_ARCH}.deb
-        path: uikittools_${UIKITTOOLS_VERSION}_${DEB_ARCH}.deb
+        name: uikittools_${{ env.UIKITTOOLS_VERSION }}_${{ env.DEB_ARCH }}.deb
+        path: uikittools_${{ env.UIKITTOOLS_VERSION }}_${{ env.DEB_ARCH }}.deb
  
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
@@ -109,8 +109,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ github.event.release.upload_url }}
-        asset_path: uikittools_${UIKITTOOLS_VERSION}_${DEB_ARCH}.deb
-        asset_name: uikittools_${UIKITTOOLS_VERSION}_${DEB_ARCH}.deb
+        asset_path: uikittools_${{ env.UIKITTOOLS_VERSION }}_${{ env.DEB_ARCH }}.deb
+        asset_name: uikittools_${{ env.UIKITTOOLS_VERSION }}_${{ env.DEB_ARCH }}.deb
         asset_content_type: application/octet-stream
 
     - name: Copy Procursus to Cache Location
