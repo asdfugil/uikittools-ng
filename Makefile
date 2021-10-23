@@ -11,7 +11,7 @@ ALL := gssc deviceinfo
 else ifneq (,$(findstring iphoneos,$(CC) $(CFLAGS)))
 ALL := gssc ldrestart sbdidlaunch sbreload uicache uiopen deviceinfo uialert uishoot uinotify uisave
 else ifneq (,$(findstring appletvos,$(CC) $(CFLAGS)))
-ALL := gssc ldrestart sbdidlaunch sbreload uicache uiopen deviceinfo uialert uishoot uisave
+ALL := gssc ldrestart sbdidlaunch sbreload uicache uiopen deviceinfo uialert
 else ifneq (,$(findstring macosx,$(CC) $(CFLAGS)))
 ALL := gssc deviceinfo uialert
 endif
