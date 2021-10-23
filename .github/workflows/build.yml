@@ -64,8 +64,8 @@ jobs:
 
     - name: build
       run: |
-        echo ${PLATFROM}-${ARCH}-${PLATFORM_VERSION}
-        case ${PLATFROM}-${ARCH}-${PLATFORM_VERSION} in
+        echo ${PLATFORM}-${ARCH}-${PLATFORM_VERSION}
+        case ${PLATFORM}-${ARCH}-${PLATFORM_VERSION} in
           macosx-x86_64-11)
             export PREFIX=/opt/procursus
             export DEB_ARCH=darwin-amd64
