@@ -6,13 +6,13 @@ STRIP   ?= strip
 LDID    ?= ldid
 INSTALL ?= install
 
-ifneq (,$(findstring bridgeos,$(CFLAGS)))
+ifneq (,$(findstring bridgeos,$(CC) $(CFLAGS)))
 ALL := gssc deviceinfo
-else ifneq (,$(findstring iphoneos,$(CFLAGS)))
+else ifneq (,$(findstring iphoneos,$(CC) $(CFLAGS)))
 ALL := gssc ldrestart sbdidlaunch sbreload uicache uiopen deviceinfo uialert uishoot uinotify uisave
-else ifneq (,$(findstring appletvos,$(CFLAGS)))
+else ifneq (,$(findstring appletvos,$(CC) $(CFLAGS)))
 ALL := gssc ldrestart sbdidlaunch sbreload uicache uiopen deviceinfo uialert uishoot uisave
-else ifneq (,$(findstring macosx,$(CFLAGS)))
+else ifneq (,$(findstring macosx,$(CC) $(CFLAGS)))
 ALL := gssc deviceinfo uialert
 endif
 MAN := $(patsubst %,%.1,$(ALL))
