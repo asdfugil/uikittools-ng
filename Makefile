@@ -8,9 +8,11 @@ INSTALL ?= install
 
 ifneq (,$(findstring bridgeos,$(CFLAGS)))
 ALL := gssc deviceinfo
-else ifeq (,$(findstring macosx,$(CFLAGS)))
+else ifneq (,$(findstring iphoneos,$(CFLAGS)))
 ALL := gssc ldrestart sbdidlaunch sbreload uicache uiopen deviceinfo uialert uishoot uinotify uisave
-else
+else ifneq (,$(findstring appletvos,$(CFLAGS)))
+ALL := gssc ldrestart sbdidlaunch sbreload uicache uiopen deviceinfo uialert uishoot uisave
+else ifneq (,$(findstring macosx,$(CFLAGS)))
 ALL := gssc deviceinfo uialert
 endif
 MAN := $(patsubst %,%.1,$(ALL))
