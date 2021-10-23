@@ -91,7 +91,7 @@ jobs:
         gmake -j$(sysctl -n hw.ncpu) install DESTDIR=debroot
         export UIKITTOOLS_VERSION=$(echo "$(git describe --tags --abbrev=0)")
         mkdir debroot/DEBIAN
-        gsed -e "s/@DEB_ARCH@/${DEB_ARCH}/g" -e "s/@DEB_UIKITTOOLS_V@/${UIKITTOOLS_VERSION}/g" > debroot/DEBIAN/control
+        gsed -e "s/@DEB_ARCH@/${DEB_ARCH}/g" -e "s/@DEB_UIKITTOOLS_V@/${UIKITTOOLS_VERSION}/g" control > debroot/DEBIAN/control
         dpkg-deb -b debroot uikittools_${UIKITTOOLS_VERSION}_${DEB_ARCH}.deb
 
     - uses: actions/upload-artifact@v1
