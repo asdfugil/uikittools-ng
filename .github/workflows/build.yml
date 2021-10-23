@@ -85,7 +85,7 @@ jobs:
             export DEB_ARCH=darwin-arm64
             ;;
           esac
-        export CFLAGS=I.
+        export CFLAGS=-I.
         gmake -j$(sysctl -n hw.ncpu)
         gmake -j$(sysctl -n hw.ncpu) install DESTDIR=debroot
         export UIKITTOOLS_VERSION=$(echo "$(git describe --tags --abbrev=0)")
