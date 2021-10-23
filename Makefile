@@ -6,23 +6,27 @@ STRIP   ?= strip
 LDID    ?= ldid
 INSTALL ?= install
 
+ifneq (,$(findstring bridgeos,$(CC) $(CFLAGS)))
+ALL := gssc deviceinfo
+else ifneq (,$(findstring iphoneos,$(CC) $(CFLAGS)))
 ALL := gssc ldrestart sbdidlaunch sbreload uicache uiopen deviceinfo uialert uishoot uinotify uisave
-MAN := gssc.1 ldrestart.1 sbdidlaunch.1 sbreload.1 uicache.1 uiopen.1 deviceinfo.1 uialert.1 uishoot.1 uinotify.1 uisave.1
-ALLMAC := gssc deviceinfo uialert
-MANMAC := gssc.1 deviceinfo.1 uialert.1
+else ifneq (,$(findstring appletvos,$(CC) $(CFLAGS)))
+ALL := gssc ldrestart sbdidlaunch sbreload uicache uiopen deviceinfo uialert
+else ifneq (,$(findstring macosx,$(CC) $(CFLAGS)))
+ALL := gssc deviceinfo uialert
+endif
+MAN := $(patsubst %,%.1,$(ALL))
 APP_PATH ?= $(MEMO_PREFIX)/Applications
 
 sign: $(ALL)
 	$(STRIP) $(ALL)
-	$(LDID) -Sent.plist ldrestart sbdidlaunch deviceinfo
-	$(LDID) -Sgssc.plist gssc
-	$(LDID) -Ssbreload.plist sbreload
-	$(LDID) -Suicache.plist uicache
-	$(LDID) -Suiopen.plist uiopen
-	$(LDID) -Suishoot.plist uishoot
-	$(LDID) -Suinotify.plist uinotify
-	$(LDID) -Suisave.plist uisave
-
+	for tool in $(ALL); do \
+		if [ -f $$tool.plist ]; then \
+			$(LDID) -S$$tool.plist $$tool; \
+		else \
+			$(LDID) -Sent.plist $$tool; \
+		fi; \
+	done
 all: sign
 
 gssc: gssc.m gssc.plist
@@ -60,7 +64,7 @@ deviceinfo: deviceinfo.c ecidecid.m uiduid.m serial.m locale.m cfversion.c
 
 install: sign $(ALL)
 	$(INSTALL) -d $(DESTDIR)$(PREFIX)/bin/
-	$(INSTALL) -s -m755 $(ALL) $(DESTDIR)$(PREFIX)/bin/
+	$(INSTALL) -m755 $(ALL) $(DESTDIR)$(PREFIX)/bin/
 	ln -sf deviceinfo $(DESTDIR)$(PREFIX)/bin/cfversion
 	ln -sf deviceinfo $(DESTDIR)$(PREFIX)/bin/uiduid
 	ln -sf deviceinfo $(DESTDIR)$(PREFIX)/bin/ecidecid
@@ -70,16 +74,6 @@ install: sign $(ALL)
 	$(INSTALL) -m644 $(patsubst %,man/%,$(MAN)) $(DESTDIR)$(PREFIX)/share/man/man1/
 	$(INSTALL) -m644 $(patsubst %,man/zh_TW/%,$(MAN)) $(DESTDIR)$(PREFIX)/share/man/zh_TW/man1/
 	$(INSTALL) -m644 $(patsubst %,man/zh_CN/%,$(MAN)) $(DESTDIR)$(PREFIX)/share/man/zh_CN/man1/
-
-install-macosx: $(ALLMAC)
-	$(INSTALL) -d $(DESTDIR)$(PREFIX)/bin/
-	$(INSTALL) -s -m755 $(ALLMAC) $(DESTDIR)$(PREFIX)/bin/
-	$(INSTALL) -d $(DESTDIR)$(PREFIX)/share/man/man1/
-	$(INSTALL) -d $(DESTDIR)$(PREFIX)/share/man/zh_TW/man1/
-	$(INSTALL) -d $(DESTDIR)$(PREFIX)/share/man/zh_CN/man1/
-	$(INSTALL) -m644 $(patsubst %,man/%,$(MANMAC)) $(DESTDIR)$(PREFIX)/share/man/man1/
-	$(INSTALL) -m644 $(patsubst %,man/zh_TW/%,$(MANMAC)) $(DESTDIR)$(PREFIX)/share/man/zh_TW/man1/
-	$(INSTALL) -m644 $(patsubst %,man/zh_CN/%,$(MANMAC)) $(DESTDIR)$(PREFIX)/share/man/zh_CN/man1/
 
 clean:
 	rm -rf $(ALL) $(ALLMAC) *.dSYM
