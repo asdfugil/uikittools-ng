@@ -86,7 +86,7 @@ jobs:
             ;;
           esac
         export CFLAGS=-I.
-        sudo gsed -i '/API_UNAVAILABLE/d' $(xcrun -sdk ${PLATFORM} --show-sdk-path)/System/Library/Frameworks/CoreFoundation.framework/Headers/*.h 
+        sudo gsed -i 's/API_UNAVAILABLE(ios, watchos, tvos)/API_AVAILABLE(ios(2.0), watchos(1.0), tvos(9.0))/g' $(xcrun -sdk ${PLATFORM} --show-sdk-path)/System/Library/Frameworks/CoreFoundation.framework/Headers/*.h 
         gmake -j$(sysctl -n hw.ncpu)
         gmake -j$(sysctl -n hw.ncpu) install DESTDIR=debroot
         export UIKITTOOLS_VERSION=$(echo "$(git describe --tags --abbrev=0)")
