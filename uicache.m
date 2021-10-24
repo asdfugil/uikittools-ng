@@ -79,6 +79,11 @@ typedef NS_OPTIONS(NSUInteger, SBSRelaunchActionOptions) {
 - (void)sendActions:(NSSet *)actions withResult:(id)result;
 @end
 
+@interface PBSSystemService : NSObject
++ (instancetype)sharedInstance;
+- (void)relaunch;
+@end
+
 int force = 0;
 
 // clang-format off
@@ -466,17 +471,14 @@ int main(int argc, char *argv[]) {
 		}
 
 		if (respring) {
-			dlopen(
-				"/System/Library/PrivateFrameworks/"
-				"FrontBoardServices.framework/FrontBoardServices",
-				RTLD_NOW);
-			dlopen(
-				"/System/Library/PrivateFrameworks/"
-				"SpringBoardServices.framework/SpringBoardServices",
-				RTLD_NOW);
+			dlopen("/System/Library/PrivateFrameworks/FrontBoardServices.framework/FrontBoardServices", RTLD_NOW);
+#if TARGET_OS_TV
+		dlopen("/System/Library/PrivateFrameworks/PineBoardServices.framework/PineBoardServices", RTLD_NOW);
+		[[objc_getClass("PBSSystemService") sharedInstance] relaunch];
+#else
+			dlopen("/System/Library/PrivateFrameworks/SpringBoardServices.framework/SpringBoardServices", RTLD_NOW);
 
-			SBSRelaunchAction *restartAction = [objc_getClass(
-				"SBSRelaunchAction")
+			SBSRelaunchAction *restartAction = [objc_getClass("SBSRelaunchAction")
 				actionWithReason:@"respring"
 						 options:(SBSRelaunchActionOptionsRestartRenderServer |
 								  SBSRelaunchActionOptionsFadeToBlackTransition)
@@ -484,6 +486,7 @@ int main(int argc, char *argv[]) {
 			[(FBSSystemService *)[objc_getClass("FBSSystemService")
 				sharedService] sendActions:[NSSet setWithObject:restartAction]
 								withResult:nil];
+#endif
 			sleep(2);
 		}
 
