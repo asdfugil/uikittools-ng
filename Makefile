@@ -69,7 +69,7 @@ lsrebuild: lsrebuild.m lsrebuild.plist
 deviceinfo: deviceinfo.c ecidecid.m uiduid.m serial.m locale.m cfversion.c
 	$(CC) -fobjc-arc -O3 $(CFLAGS) $^ -o $@ $(LDFLAGS) -framework CoreFoundation -lMobileGestalt
 
-install: sign $(ALL)
+install: sign
 	$(INSTALL) -d $(DESTDIR)$(PREFIX)/bin/
 	$(INSTALL) -m755 $(ALL) $(DESTDIR)$(PREFIX)/bin/
 	ln -sf deviceinfo $(DESTDIR)$(PREFIX)/bin/cfversion
