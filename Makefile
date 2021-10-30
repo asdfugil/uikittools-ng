@@ -21,7 +21,6 @@ APP_PATH ?= $(MEMO_PREFIX)/Applications
 
 sign: $(ALL)
 	$(STRIP) $(ALL)
-ifneq (,$(findstring macosx,$(CC) $(CFLAGS)))
 	for tool in $(ALL); do \
 		if [ -f $$tool.plist ]; then \
 			$(LDID) -S$${tool}.plist $$tool; \
@@ -29,7 +28,6 @@ ifneq (,$(findstring macosx,$(CC) $(CFLAGS)))
 			$(LDID) -Sent.plist $$tool; \
 		fi; \
 	done
-endif
 
 all: sign
 
