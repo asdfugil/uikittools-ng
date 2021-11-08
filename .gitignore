@@ -10,6 +10,10 @@ uishoot
 uinotify
 uisave
 lsrebuild
+uidisplay
+mgask
 compile_commands.json
 .cache
 include/
+*.mo
+*.dSYM

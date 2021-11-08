@@ -5,7 +5,7 @@
 	<true/>
 	<key>com.apple.private.skip-library-validation</key>
 	<true/>
-	<key>com.apple.private.MobileGestalt.AllowedProtectedKeys</key>
+	<key>com.apple.backboard.displaybrightness</key>
 	<true/>
 </dict>
 </plist>
